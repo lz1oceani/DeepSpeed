@@ -219,8 +219,6 @@ class DeepSpeedZeRoOffload(object):
         zero_quantized_nontrainable_weights=False,
     ):
 
-        see_memory_usage("DeepSpeedZeRoOffload initialize [begin]", force=True)
-
         print_rank_0(f"initialized {__class__.__name__} with args: {locals()}", force=False)
 
         self.module = module

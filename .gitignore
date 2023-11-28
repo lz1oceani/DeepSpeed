@@ -35,6 +35,9 @@ docs/code-docs/build
 .sass-cache/            # SASS cache
 .jekyll-cache/          # Jekyll cache
 .jekyll-metadata
+.history/
+*.egg-info/
+.vscode/
 
 # Testing data
 tests/unit/saved_checkpoint/  # Saved checkpoints for testing

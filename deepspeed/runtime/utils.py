@@ -798,16 +798,14 @@ def see_memory_usage(message, force=False):
     # python doesn't do real-time garbage collection so do it explicitly to get the correct RAM reports
     gc.collect()
 
-    # Print message except when distributed but not rank 0
-    logger.info(message)
-    logger.info(f"MA {round(get_accelerator().memory_allocated() / (1024 * 1024 * 1024),2 )} GB \
-        Max_MA {round(get_accelerator().max_memory_allocated() / (1024 * 1024 * 1024),2)} GB \
-        CA {round(torch_memory_reserved() / (1024 * 1024 * 1024),2)} GB \
-        Max_CA {round(torch_max_memory_reserved() / (1024 * 1024 * 1024))} GB ")
-
+    from pyt.meta.process_utils import get_total_memory
     vm_stats = psutil.virtual_memory()
     used_GB = round(((vm_stats.total - vm_stats.available) / (1024**3)), 2)
-    logger.info(f'CPU Virtual Memory:  used = {used_GB} GB, percent = {vm_stats.percent}%')
+    
+    # Print message except when distributed but not rank 0
+    logger.info(message)
+    logger.info(f"CUDA | Allocated: Now={round(get_accelerator().memory_allocated() / (1024 ** 3),2 )}G, Max={round(get_accelerator().max_memory_allocated() / (1024 ** 3),2)}G || Reserved: Now={round(torch_memory_reserved() / (1024 ** 3),2)}G, Max={round(torch_max_memory_reserved() / (1024 ** 3))}G")
+    logger.info(f"CPU | Process = {get_total_memory()}, Total = {used_GB}G, Percent = {vm_stats.percent}%")
 
     # get the peak memory to report correct data, so reset the counter for the next call
     get_accelerator().reset_peak_memory_stats()
