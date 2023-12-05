@@ -171,6 +171,8 @@ def get_bfloat16_enabled(param_dict):
 def get_fp16_master_weights_and_grads_enabled(param_dict):
     if get_fp16_enabled(param_dict):
         return get_scalar_param(param_dict[FP16], FP16_MASTER_WEIGHTS_AND_GRADS, FP16_MASTER_WEIGHTS_AND_GRADS_DEFAULT)
+    if get_bfloat16_enabled(param_dict):
+        return get_scalar_param(param_dict[BFLOAT16], FP16_MASTER_WEIGHTS_AND_GRADS, FP16_MASTER_WEIGHTS_AND_GRADS_DEFAULT)
     else:
         return False
 
